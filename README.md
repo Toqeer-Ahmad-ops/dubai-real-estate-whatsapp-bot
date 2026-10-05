@@ -352,6 +352,8 @@ WHERE created_at >= '2025-10-05'
 GROUP BY language, status;
 ```
 
+### **2. Architecture Diagram - Fix `docs/architecture-day7.jpg`**
+
 ## 👨‍💻 Author
 
 **Toqeer Ahmad**
