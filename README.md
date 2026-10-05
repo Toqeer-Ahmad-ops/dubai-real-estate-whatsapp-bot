@@ -36,25 +36,24 @@ Production-grade WhatsApp RAG Bot for Dubai Real Estate — Voice notes (0:02) +
 
 ```mermaid
 flowchart TD
-    A[WhatsApp Voice 0:02 / Text] --> B[Whapi Cloud - typing_time=5]
-    B --> C[ngrok - rematch-extent-geology.ngrok-free.dev]
-    C --> D[Webhook POST /webhook/whatsapp/webhook]
-    D --> E[Is Text? / Is Voice?]
-    E --> F[Groq Whisper STT - Transcribe Voice]
-    F --> G[Set Question + Merge Voice+Text]
-    G --> H[Check Idempotency + Already Processed?]
-    H --> I[Mark Processing Before Call RAG API]
-    I --> J[Call RAG API - Qdrant + Gemini/Groq]
-    J --> K[Is Quota Error? - JSON.stringify lowercase contains quota|500|system busy]
-    K -->|False| L[Format Professional Answer - Strip source tags]
+    A[WhatsApp Voice 0 02 Text] --> B[Whapi Cloud typing_time 5]
+    B --> C[ngrok Tunnel]
+    C --> D[Webhook POST]
+    D --> E[Is Text Is Voice]
+    E --> F[Groq Whisper STT]
+    F --> G[Set Question Merge]
+    G --> H[Check Idempotency]
+    H --> I[Mark Processing]
+    I --> J[Call RAG API Qdrant Gemini Groq]
+    J --> K[Is Quota Error Check]
+    K -->|False| L[Format Professional Answer]
     K -->|True| M[Wait 20s]
-    M --> N[Is Retry <3? - $runIndex < 3]
+    M --> N[Is Retry Less Than 3]
     N -->|True| J
-    N -->|False| O[Fallback Reply - ⏳🔄⏰📄]
-    L --> P[Send WhatsApp Reply - Text]
+    N -->|False| O[Fallback Reply]
+    L --> P[Send WhatsApp Reply]
     O --> P
-    P --> Q[Log Audit Duplicate + RAG Success?]
-    P --> R[Voice Reply - ElevenLabs - Deactivated for text demo]
+    P --> Q[Log Audit]
 ```
 
 ---
@@ -62,22 +61,22 @@ flowchart TD
 ## 📸 Screenshots
 
 ### 1. Production WhatsApp Workflow (RE-RAG-Bot-DXB-Prod)
-[Production WhatsApp Workflow](docs/screenshots/whatsapp-workflow.png)
+![Production WhatsApp Workflow](docs/screenshots/whatsapp-workflow.png)
 
 ### 2. System Architecture - WhatsApp + RAG + Quota Handling
-[System Architecture](docs/screenshots/architecture-day7.webp)
+![System Architecture](docs/screenshots/architecture-day7.webp)
 
 ### 3. English Voice Query - Professional Format ✅💰📄 (11:11 am success)
-[English Voice Query](docs/screenshots/whatsapp-en-voice.png)
+![English Voice Query](docs/screenshots/whatsapp-en-voice.png)
 
 ### 4. Arabic Voice Query - Professional Format (11:11 am success)
-[Arabic Voice Query](docs/screenshots/whatsapp-ar-voice.png)
+![Arabic Voice Query](docs/screenshots/whatsapp-ar-voice.png)
 
 ### 5. 4 Simultaneous Audios - Concurrency Test (11:11 am)
-[Concurrency Test](docs/screenshots/whatsapp-4-audios-11-11am.png)
+![Concurrency Test](docs/screenshots/whatsapp-4-audios-11-11am.png)
 
 ### 6. Quota Exhausted - Graceful Fallback ⏳🔄⏰📄 (1:59 pm → 2:04 pm)
-[Quota Fallback](docs/screenshots/whatsapp-fallback-quota.png)
+![Quota Fallback](docs/screenshots/whatsapp-fallback-quota.png)
 
 ---
 
