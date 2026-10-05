@@ -32,7 +32,7 @@ Production-grade WhatsApp RAG Bot for Dubai Real Estate — Voice notes (0:02) +
 
 ## 🏗 Architecture
 
-![Architecture](docs/screenshots/architecture-day7.webp)
+![Architecture](docs/architecture-day7.jpg)
 
 ```mermaid
 flowchart TD
@@ -351,8 +351,6 @@ FROM whatsapp_logs
 WHERE created_at >= '2025-10-05'
 GROUP BY language, status;
 ```
-
-### **2. Architecture Diagram - Fix `docs/architecture-day7.jpg`**
 
 ## 👨‍💻 Author
 
