@@ -56,6 +56,10 @@ flowchart TD
     P --> Q[Log Audit]
 ```
 
+> **Voice Reply (ElevenLabs TTS)** - Deactivated for text demo (cost optimization). 
+> Branch `feature/voice-reply` has working nodes - enable by connecting R → Voice Reply → Send Audio Reply.
+> Text reply with citations is preferred for Dubai RE use-case.
+
 ---
 
 ## 📸 Screenshots
@@ -319,6 +323,34 @@ ngrok http 5678
 | ngrok 500 | `POST /webhook/... 500 Internal Server Error` | Restart every 2h, keep executions <70s |
 
 ---
+
+## 📊 Production Monitoring Dashboard
+
+### Logs Table (Supabase)
+| Column | Type | Purpose |
+|--------|------|---------|
+| message_id | TEXT unique | Idempotency – prevents duplicate processing |
+| correlation_id | UUID | Trace: Whapi → n8n → RAG API → Supabase |
+| language | TEXT | EN / AR / AR-Dubai-dialect |
+| latency_ms | INT | End-to-end: Groq Whisper 2.3s + RAG |
+| similarity | FLOAT | Qdrant score – e.g. 0.822 for DLD fees |
+| status | TEXT | success / quota_fallback / error |
+| created_at | TIMESTAMP | 11:11 am test – 4 simultaneous audios |
+
+### Metrics (Production 11:11 am Proof)
+- **EN Voice:** "What is mortgage fee?" → 0.25% + AED 290 [0.822] – 2.3s
+- **EN Text:** "What is DLD transfer fee?" → 4% buyer [0.822] – 1.1s
+- **AR Voice:** "كم رسوم نقل الملكية؟" → 4% [0.775] – 2.4s
+- **Concurrency:** 4 x 0:02 voice notes at 11:11 am → 3 success + 1 fallback (quota handled)
+- **Fallback:** Gemini quota 429 → Wait 20s → Retry <3? → "Please retry after 60s" – No raw leak
+
+### Dashboard Query
+```sql
+SELECT language, status, AVG(latency_ms), COUNT(*) 
+FROM whatsapp_logs 
+WHERE created_at >= '2025-10-05'
+GROUP BY language, status;
+```
 
 ## 👨‍💻 Author
 
